@@ -26,8 +26,8 @@ mixin {
 }
 
 version = "${mc_version}-${mod_version}"
-group = 'umpaz.nethersdelight' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'NethersDelight'
+group = mod_group // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = mod_id
 
 //sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -51,7 +51,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                nethersdelight {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
@@ -68,7 +68,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                nethersdelight {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
@@ -88,7 +88,7 @@ minecraft {
             environment 'target', 'fmluserdevdata'
 
             mods {
-                nethersdelight {
+                "${mod_id}" {
                     source sourceSets.main
                 }
             }
@@ -96,22 +96,35 @@ minecraft {
     }
 }
 
-repositories {
-    maven {
-        // JEI
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        // CraftTweaker
-        name = "BlameJared"
-        url = "https://maven.blamejared.com/"
-    }
-    maven { url "https://www.cursemaven.com" }
-}
-
 sourceSets.main.resources {
     srcDirs += 'src/generated/resources'
+}
+
+repositories {
+    maven {
+        // CraftTweaker and JEI
+        name = "BlameJared"
+        url = "https://maven.blamejared.com/"
+        content {
+            includeGroup "com.blamejared"
+            includeGroup "mezz.jei"
+        }
+    }
+    maven {
+        // JEI fallback
+        name = "Modmaven"
+        url = "https://modmaven.dev/"
+        content {
+            includeGroup "mezz.jei"
+        }
+    }
+    maven {
+        name = "Cursemaven"
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
